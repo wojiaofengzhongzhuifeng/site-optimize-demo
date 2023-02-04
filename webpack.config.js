@@ -4,9 +4,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   mode: "production",
-  entry: path.resolve(__dirname, './src/index.js'),
+  // entry: path.resolve(__dirname, './src/main.js'),
+  entry: {
+    main: path.resolve(__dirname, './src/main.js'),
+    login: path.resolve(__dirname, './src/login.js'),
+  },
   output: {
-    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].[hash].js',
   },
   module: {
     // exclude node_modules
@@ -39,8 +44,15 @@ module.exports = {
       React: 'react'
     }),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, './index.html')
-    })
+      template: path.resolve(__dirname, './main.html'),
+      filename: 'main.html',
+      chunks: ['main']
+    }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, './login.html'),
+      filename: 'login.html',
+      chunks: ['login']
+    }),
   ],
 
   devServer: {
@@ -48,7 +60,7 @@ module.exports = {
       directory: path.resolve(__dirname, 'dist')
     },
     compress: true,
-    port: 9001,
+    port: 9002,
     hot: true
   }
 

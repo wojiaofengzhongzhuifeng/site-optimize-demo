@@ -4,7 +4,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   mode: "production",
-  // entry: path.resolve(__dirname, './src/main.js'),
   entry: {
     main: path.resolve(__dirname, './src/main.js'),
     login: path.resolve(__dirname, './src/login.js'),
@@ -12,6 +11,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[hash].js',
+    clean: true
   },
   module: {
     // exclude node_modules
@@ -62,6 +62,29 @@ module.exports = {
     compress: true,
     port: 9002,
     hot: true
-  }
+  },
 
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      minSize: 20000,
+      minRemainingSize: 0,
+      minChunks: 1,
+      maxAsyncRequests: 30,
+      maxInitialRequests: 30,
+      enforceSizeThreshold: 50000,
+      cacheGroups: {
+        defaultVendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10,
+          reuseExistingChunk: true,
+        },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true,
+        },
+      },
+    },
+  },
 }
